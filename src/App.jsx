@@ -51,7 +51,10 @@ function Header() {
   return (
     <div className="header">
       <div className="header-inner">
-        <a className="wordmark" href="/">Family Tax</a>
+        <a className="brand" href="/">
+          <img className="logo" src="/logo.png" alt="Family Tax" onError={(e) => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "inline"; }} />
+          <span className="wordmark" style={{ display: "none" }}>Family Tax</span>
+        </a>
         <span className="eyebrow">Careers</span>
       </div>
     </div>
@@ -59,7 +62,7 @@ function Header() {
 }
 
 function Footer() {
-  return <div className="footer">Family Tax, Inc. &middot; Family owned since 2009 &middot; Stevenson Ranch &amp; Lancaster, CA</div>;
+  return <div className="footer">Family Tax Inc. &middot; Family owned since 2009 &middot; 25802 Hemingway Ave STE 103, Stevenson Ranch, CA 91381</div>;
 }
 
 function QuestionField({ q, value, onChange }) {
@@ -400,7 +403,7 @@ export default function App() {
       <>
         <div className="hero">
           <h1>Join our team for the 2027 tax season</h1>
-          <p>Family Tax is a family owned firm serving thousands of families every season across Stevenson Ranch and Lancaster. We hire people who care about doing careful work and treating clients like neighbors.</p>
+          <p>Family Tax is a family owned firm serving thousands of families every season from our Stevenson Ranch office. We hire people who care about doing careful work and treating clients like neighbors.</p>
           {season ? (
             <div className="season-line">Paid training begins {season.training_start ? new Date(season.training_start + "T12:00:00").toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }) : "in January"}. The season runs through April.</div>
           ) : null}
@@ -589,7 +592,7 @@ export default function App() {
         {error ? <div className="error">{error}</div> : null}
         {assessment.questions.map((q, i) => (
           <div className="card" key={q.id}>
-            <div className="eyebrow" style={{ color: "var(--gold-deep)" }}>Question {i + 1}{q.points ? " \u00b7 " + q.points + (Number(q.points) === 1 ? " point" : " points") : ""}</div>
+            <div className="eyebrow" style={{ color: "var(--red)" }}>Question {i + 1}{q.points ? " \u00b7 " + q.points + (Number(q.points) === 1 ? " point" : " points") : ""}</div>
             {q.attachment_url ? <p><a href={q.attachment_url} target="_blank" rel="noreferrer">Open the attached document</a></p> : null}
             <QuestionField
               q={{ id: q.id, prompt: q.prompt, help_text: null, input_type: q.qtype === "multiple_choice" ? "select" : q.qtype === "multi_select" ? "multi_select" : "long_text", options: q.options, is_required: false }}
