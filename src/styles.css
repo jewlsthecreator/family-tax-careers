@@ -1,15 +1,15 @@
 :root {
-  --navy-900: #1c3252;
-  --navy: #2c4a7c;
-  --navy-050: #eef2f8;
-  --gold: #c6a353;
-  --gold-deep: #a98634;
+  --navy-900: #202f6a;
+  --navy: #283991;
+  --navy-050: #eef0f9;
+  --red: #9e1b1b;
+  --red-deep: #7d1515;
   --ink: #22293a;
   --muted: #5b6577;
   --paper: #fafaf7;
   --card: #ffffff;
   --line: #dce2ec;
-  --danger: #a33a2f;
+  --danger: #9e1b1b;
   --ok: #2f7d4f;
 }
 
@@ -41,23 +41,25 @@ p { margin: 0 0 0.9rem; }
 a { color: var(--navy); }
 
 .header {
-  background: var(--navy-900);
-  color: #fff;
-  padding: 1rem 1.25rem;
+  background: #fff;
+  border-bottom: 3px solid var(--navy-900);
+  padding: 0.85rem 1.25rem;
 }
 .header-inner {
   max-width: 680px;
   margin: 0 auto;
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.75rem;
 }
+.brand { display: flex; align-items: center; text-decoration: none; }
+.logo { display: block; height: 46px; width: auto; }
 .wordmark {
   font-family: "Newsreader", Georgia, serif;
   font-weight: 600;
   font-size: 1.25rem;
   letter-spacing: 0.01em;
-  color: #fff;
+  color: var(--navy-900);
   text-decoration: none;
 }
 .eyebrow {
@@ -65,7 +67,7 @@ a { color: var(--navy); }
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--red);
 }
 
 .wrap {
@@ -100,7 +102,7 @@ a { color: var(--navy); }
   color: var(--muted);
   margin: 0.35rem 0 0.75rem;
 }
-.pay { color: var(--gold-deep); font-weight: 600; }
+.pay { color: var(--navy-900); font-weight: 600; }
 
 .btn {
   display: inline-block;
@@ -118,7 +120,7 @@ a { color: var(--navy); }
 .btn:hover { background: var(--navy-900); }
 .btn:disabled { opacity: 0.55; cursor: default; }
 .btn:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 3px solid var(--gold);
+  outline: 3px solid var(--red);
   outline-offset: 2px;
 }
 .btn-quiet {
@@ -136,7 +138,7 @@ a { color: var(--navy); }
   margin-bottom: 0.35rem;
 }
 .help { font-size: 0.85rem; color: var(--muted); margin: -0.15rem 0 0.4rem; }
-.req { color: var(--gold-deep); }
+.req { color: var(--red); }
 
 input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea {
   width: 100%;
@@ -212,8 +214,8 @@ textarea { min-height: 110px; resize: vertical; }
   align-items: center;
   justify-content: center;
 }
-.rail li.done .dot { border-color: var(--gold); background: var(--gold); color: #fff; }
-.rail li.now .dot { border-color: var(--navy); background: var(--navy); color: #fff; }
+.rail li.done .dot { border-color: var(--navy); background: var(--navy); color: #fff; }
+.rail li.now .dot { border-color: var(--red); background: var(--red); color: #fff; }
 .rail .step-name { font-weight: 600; }
 .rail li.now .step-name { color: var(--navy-900); }
 .rail .step-note { font-size: 0.85rem; color: var(--muted); }
