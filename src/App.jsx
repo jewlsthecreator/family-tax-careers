@@ -481,6 +481,7 @@ export default function App() {
         </div>
         <div className="btn-row">
           <button className="btn" disabled={busy} onClick={submitApplication}>{busy ? "Submitting..." : "Submit application"}</button>
+          <button className="btn btn-quiet" disabled={busy} onClick={() => { setView("positions"); setError(""); window.scrollTo(0, 0); }}>Back</button>
         </div>
       </>
     );
