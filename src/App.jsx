@@ -411,7 +411,17 @@ export default function App() {
         {error ? <div className="error">{error}</div> : null}
         <div className="card">
           <h3>What we expect from everyone</h3>
-          <p>Our clients trust us with their finances, so our team looks and acts like tax professionals. Office attire is business formal, always. We occasionally call a business casual day during tax season, but that is rare. Tattoos stay covered and facial piercings come out while working with clients. We expect reliable attendance for the full season, from January training through April, and careful, honest work on every file.</p>
+          <p>Our clients trust us with their finances, so our team looks and acts like tax professionals, and we do careful, honest work on every file. Attire is business formal, always. We occasionally call a business casual day during tax season, but that is rare. No visible tattoos and no facial piercings at work.</p>
+          <div className="req-title">Every role requires</div>
+          <ul className="req-list">
+            <li>Bilingual in English and Spanish</li>
+            <li>Prior work experience</li>
+            <li>Comfortable with technology, with fast and accurate typing</li>
+            <li>Able to write professional, well-formatted texts and emails</li>
+            <li>Solid customer service basics</li>
+            <li>Two letters of recommendation, included in the same file as your resume</li>
+            <li>Reliable attendance for the full season, from January training through April</li>
+          </ul>
           <p className="fineprint">We provide reasonable accommodations for religious practices and medical needs as required by law.</p>
         </div>
         {positions.length === 0 && !error ? <div className="notice">No positions are open right now. Check back soon.</div> : null}
@@ -489,7 +499,7 @@ export default function App() {
           <QuestionField key={q.id} q={q} value={appAnswers[q.id]} onChange={(v) => setAppAnswers((a) => ({ ...a, [q.id]: v }))} />
         ))}
         <div className="field">
-          <label className="q" htmlFor="resume">Resume (PDF or Word)<span className="req"> *</span></label>
+          <label className="q" htmlFor="resume">Resume with 2 letters of recommendation (PDF or Word)<span className="req"> *</span></label>
           <input id="resume" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(e) => setResume(e.target.files && e.target.files[0] ? e.target.files[0] : null)} />
         </div>
         <div className="btn-row">
