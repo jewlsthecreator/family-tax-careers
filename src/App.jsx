@@ -193,15 +193,21 @@ export default function App() {
       .catch((e) => setError(e.message));
   }
 
-  async function startApply(p) {
+  function startApply(p) {
+    setError("");
+    setPosition(p);
+    setView("expect");
+    window.scrollTo(0, 0);
+  }
+
+  async function continueApply() {
     setError("");
     setBusy(true);
     try {
-      const d = await post("get_precheck", { position_slug: p.slug });
-      setPosition(p);
+      const d = await post("get_precheck", { position_slug: position.slug });
       setPrecheckAnswers({});
       if ((d.questions || []).length === 0) {
-        await loadApplication(p, "");
+        await loadApplication(position, "");
       } else {
         setPrecheckQs(d.questions);
         setView("precheck");
@@ -409,6 +415,29 @@ export default function App() {
           ) : null}
         </div>
         {error ? <div className="error">{error}</div> : null}
+        {positions.length === 0 && !error ? <div className="notice">No positions are open right now. Check back soon.</div> : null}
+        {positions.map((p) => (
+          <div className="card" key={p.slug}>
+            <h3>{p.title}</h3>
+            <div className="meta">
+              {fmtPay(p) ? <span className="pay">{fmtPay(p)}</span> : null}
+              {p.location_label ? <span>{p.location_label}</span> : null}
+              {p.schedule_label ? <span>{p.schedule_label}</span> : null}
+            </div>
+            {p.description ? <p>{p.description}</p> : null}
+            <button className="btn" disabled={busy} onClick={() => startApply(p)}>Apply for this role</button>
+          </div>
+        ))}
+      </>
+    );
+  }
+
+  if (view === "expect" && position) {
+    body = (
+      <>
+        <h1>Applying for: {position.title}</h1>
+        {fmtPay(position) ? <p className="pay">{fmtPay(position)}{position.location_label ? " \u00b7 " + position.location_label : ""}</p> : null}
+        {error ? <div className="error">{error}</div> : null}
         <div className="card">
           <h3>What we expect from everyone</h3>
           <p>Our clients trust us with their finances, so our team looks and acts like tax professionals, and we do careful, honest work on every file. Attire is business formal, always. We occasionally call a business casual day during tax season, but that is rare. No visible tattoos and no facial piercings at work.</p>
@@ -422,29 +451,20 @@ export default function App() {
             <li>Two letters of recommendation, included in the same file as your resume</li>
             <li>Reliable attendance for the full season, from January training through April</li>
           </ul>
+          {Array.isArray(position.requirements) && position.requirements.length > 0 ? (
+            <>
+              <div className="req-title">This role also requires</div>
+              <ul className="req-list">
+                {position.requirements.map((r, i) => <li key={i}>{String(r)}</li>)}
+              </ul>
+            </>
+          ) : null}
           <p className="fineprint">We provide reasonable accommodations for religious practices and medical needs as required by law.</p>
         </div>
-        {positions.length === 0 && !error ? <div className="notice">No positions are open right now. Check back soon.</div> : null}
-        {positions.map((p) => (
-          <div className="card" key={p.slug}>
-            <h3>{p.title}</h3>
-            <div className="meta">
-              {fmtPay(p) ? <span className="pay">{fmtPay(p)}</span> : null}
-              {p.location_label ? <span>{p.location_label}</span> : null}
-              {p.schedule_label ? <span>{p.schedule_label}</span> : null}
-            </div>
-            {p.description ? <p>{p.description}</p> : null}
-            {Array.isArray(p.requirements) && p.requirements.length > 0 ? (
-              <>
-                <div className="req-title">What you'll need</div>
-                <ul className="req-list">
-                  {p.requirements.map((r, i) => <li key={i}>{String(r)}</li>)}
-                </ul>
-              </>
-            ) : null}
-            <button className="btn" disabled={busy} onClick={() => startApply(p)}>Apply for this role</button>
-          </div>
-        ))}
+        <div className="btn-row">
+          <button className="btn" disabled={busy} onClick={continueApply}>{busy ? "Loading..." : "I understand, continue"}</button>
+          <button className="btn btn-quiet" disabled={busy} onClick={() => { setView("positions"); setError(""); window.scrollTo(0, 0); }}>Back</button>
+        </div>
       </>
     );
   }
