@@ -441,6 +441,7 @@ export default function App() {
         <div className="card">
           <h3>What we expect from everyone</h3>
           <p>Our clients trust us with their finances, so our team looks and acts like tax professionals, and we do careful, honest work on every file. Attire is business formal, always. We occasionally call a business casual day during tax season, but that is rare. No visible tattoos and no facial piercings at work.</p>
+          <p>Most roles run on a 4 day rotating schedule.</p>
           <div className="req-title">Every role requires</div>
           <ul className="req-list">
             <li>Bilingual in English and Spanish</li>
