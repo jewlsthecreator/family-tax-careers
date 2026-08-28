@@ -409,6 +409,11 @@ export default function App() {
           ) : null}
         </div>
         {error ? <div className="error">{error}</div> : null}
+        <div className="card">
+          <h3>What we expect from everyone</h3>
+          <p>Our clients trust us with their finances, so our team looks and acts like tax professionals. Office attire is business formal, always. We occasionally call a business casual day during tax season, but that is rare. Tattoos stay covered and facial piercings come out while working with clients. We expect reliable attendance for the full season, from January training through April, and careful, honest work on every file.</p>
+          <p className="fineprint">We provide reasonable accommodations for religious practices and medical needs as required by law.</p>
+        </div>
         {positions.length === 0 && !error ? <div className="notice">No positions are open right now. Check back soon.</div> : null}
         {positions.map((p) => (
           <div className="card" key={p.slug}>
@@ -419,6 +424,14 @@ export default function App() {
               {p.schedule_label ? <span>{p.schedule_label}</span> : null}
             </div>
             {p.description ? <p>{p.description}</p> : null}
+            {Array.isArray(p.requirements) && p.requirements.length > 0 ? (
+              <>
+                <div className="req-title">What you'll need</div>
+                <ul className="req-list">
+                  {p.requirements.map((r, i) => <li key={i}>{String(r)}</li>)}
+                </ul>
+              </>
+            ) : null}
             <button className="btn" disabled={busy} onClick={() => startApply(p)}>Apply for this role</button>
           </div>
         ))}
