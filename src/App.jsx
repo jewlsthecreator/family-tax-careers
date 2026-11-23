@@ -6,7 +6,7 @@ const STEPS = [
   { n: 2, name: "Information packet", stages: ["packet_sent", "packet_acknowledged"], note: "Read what the season looks like before you commit." },
   { n: 3, name: "Online assessment", stages: ["assessment_pending", "assessment_submitted", "assessment_passed"], note: "A short assessment you take right here." },
   { n: 4, name: "In-office skills session", stages: ["skills_invited", "skills_passed"], note: "Hands-on work at the office so we can see you in action." },
-  { n: 5, name: "Interview", stages: ["final_interview"], note: "A short conversation with our lead strategist." },
+  { n: 5, name: "Interview", stages: ["final_interview"], note: "A short conversation with Julia." },
   { n: 6, name: "Offer and training", stages: ["training_offer", "january_training", "final_roster"], note: "Paid training in January, then the season begins." },
 ];
 
@@ -22,6 +22,11 @@ function fmtPay(p) {
   const unit = p.pay_unit === "hour" ? "/hr" : " " + (p.pay_unit || "");
   if (p.pay_min && p.pay_max) return "$" + Number(p.pay_min) + "-" + Number(p.pay_max) + unit;
   return "$" + Number(p.pay_min || p.pay_max) + unit;
+}
+
+function fmtDate(d) {
+  if (!d) return null;
+  return new Date(d + "T12:00:00").toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
 }
 
 function esc(s) {
@@ -62,7 +67,7 @@ function Header() {
 }
 
 function Footer() {
-  return <div className="footer">Family Tax Inc. &middot; Family owned since 2009 &middot; 25802 Hemingway Ave STE 103, Stevenson Ranch, CA 91381</div>;
+  return <div className="footer">Family Tax Inc. &middot; Family owned since 2009 &middot; Stevenson Ranch &middot; Palmdale</div>;
 }
 
 function QuestionField({ q, value, onChange }) {
@@ -409,9 +414,9 @@ export default function App() {
       <>
         <div className="hero">
           <h1>Join our team for the 2027 tax season</h1>
-          <p>Family Tax is a family owned firm serving thousands of families every season from our Stevenson Ranch office. We hire people who care about doing careful work and treating clients like neighbors.</p>
+          <p>Family Tax is a family owned firm serving thousands of families every season from our Stevenson Ranch and Palmdale offices. We hire people who care about doing careful work and treating clients like neighbors.</p>
           {season ? (
-            <div className="season-line">Paid training begins {season.training_start ? new Date(season.training_start + "T12:00:00").toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }) : "in January"}. The season runs through April.</div>
+            <div className="season-line">Paid training begins {fmtDate(season.training_start) || "in January"}. The season runs through {fmtDate(season.season_end) || "April"}.</div>
           ) : null}
         </div>
         {error ? <div className="error">{error}</div> : null}
@@ -425,6 +430,7 @@ export default function App() {
               {p.schedule_label ? <span>{p.schedule_label}</span> : null}
             </div>
             {p.description ? <p>{p.description}</p> : null}
+            {p.start_date ? <p className="fineprint">Starts {fmtDate(p.start_date)}{p.end_date ? " \u00b7 Seasonal role ends " + fmtDate(p.end_date) : ""}</p> : null}
             <button className="btn" disabled={busy} onClick={() => startApply(p)}>Apply for this role</button>
           </div>
         ))}
@@ -438,6 +444,36 @@ export default function App() {
         <h1>Applying for: {position.title}</h1>
         {fmtPay(position) ? <p className="pay">{fmtPay(position)}{position.location_label ? " \u00b7 " + position.location_label : ""}</p> : null}
         {error ? <div className="error">{error}</div> : null}
+        {Array.isArray(position.responsibilities) && position.responsibilities.length > 0 ? (
+          <div className="card">
+            <h3>What you'll do</h3>
+            <ul className="req-list">
+              {position.responsibilities.map((r, i) => <li key={i}>{String(r)}</li>)}
+            </ul>
+          </div>
+        ) : null}
+        {Array.isArray(position.pay_tiers) && position.pay_tiers.length > 0 ? (
+          <div className="card">
+            <h3>Pay based on experience</h3>
+            <ul className="tier-list">
+              {position.pay_tiers.map((t, i) => (
+                <li key={i}><span className="tier-label">{t.label}</span><span className="pay">{t.range}</span>{t.detail ? <span className="tier-detail">{t.detail}</span> : null}</li>
+              ))}
+            </ul>
+            <p className="fineprint">Your starting rate is set at your offer based on your experience, assessment, and interview.</p>
+          </div>
+        ) : null}
+        {position.start_date ? (
+          <div className="card">
+            <h3>Season dates</h3>
+            <ul className="req-list">
+              <li>{position.start_label || ("Start date: " + fmtDate(position.start_date))}</li>
+              <li>Everyone is trained and working by January 15, 2027</li>
+              <li>Peak season starts February 1, 2027</li>
+              {position.end_date ? <li>This seasonal role ends {fmtDate(position.end_date)}</li> : null}
+            </ul>
+          </div>
+        ) : null}
         <div className="card">
           <h3>What we expect from everyone</h3>
           <p>Our clients trust us with their finances, so our team looks and acts like tax professionals, and we do careful, honest work on every file. Attire is business formal, always. We occasionally call a business casual day during tax season, but that is rare. No visible tattoos and no facial piercings at work.</p>
@@ -450,7 +486,7 @@ export default function App() {
             <li>Able to write professional, well-formatted texts and emails</li>
             <li>Solid customer service basics</li>
             <li>Two letters of recommendation, included in the same file as your resume</li>
-            <li>Reliable attendance for the full season, from January training through April</li>
+            <li>Reliable attendance for the full season, from January training through April 15</li>
           </ul>
           {Array.isArray(position.requirements) && position.requirements.length > 0 ? (
             <>
